@@ -113,7 +113,7 @@ function App() {
               }}
             />
           )}
-          {!isRunning && time > 0 && (
+          {(!isRunning && time > 0) || isCompleted ? (
             <motion.img
               src={imageEnd}
               alt="End"
@@ -127,7 +127,7 @@ function App() {
                 damping: 25
               }}
             />
-          )}
+          ) : null}
         </AnimatePresence>
       </div>
 
