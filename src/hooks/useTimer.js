@@ -48,11 +48,12 @@ export const useTimer = (mode) => {
   }, [])
 
   const reset = useCallback(() => {
-    setTime(mode === 'timer' ? timerDuration : 0)
+    // Always reset to 0 regardless of timer duration
+    setTime(0)
     setIsRunning(false)
     setLaps([])
     setIsCompleted(false)
-  }, [mode, timerDuration])
+  }, [])
 
   const addLap = useCallback(() => {
     if (mode === 'stopwatch' && isRunning) {

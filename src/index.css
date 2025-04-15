@@ -4,24 +4,24 @@
 
 @layer base {
   body {
-    @apply bg-gray-100 min-h-screen flex items-center justify-center font-sans;
+    @apply bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center font-sans transition-colors duration-200;
   }
 }
 
 @layer components {
   .neu-button {
-    @apply px-6 py-3 rounded-xl shadow-neu active:shadow-neu-inset transition-all duration-200;
+    @apply px-6 py-3 rounded-xl shadow-neu dark:shadow-neu-dark active:shadow-neu-inset dark:active:shadow-neu-dark-inset transition-all duration-200;
   }
   
   .neu-input {
-    @apply w-16 h-16 text-center text-2xl rounded-xl shadow-neu-inset bg-primary focus:outline-none;
+    @apply w-16 h-16 text-center text-2xl rounded-xl shadow-neu-inset dark:shadow-neu-dark-inset bg-primary dark:bg-dark-primary focus:outline-none transition-all duration-200;
   }
   
   .mode-switch {
-    @apply w-24 h-12 rounded-full shadow-neu p-1 cursor-pointer transition-all duration-200;
+    @apply w-24 h-12 rounded-full shadow-neu dark:shadow-neu-dark p-1 cursor-pointer transition-all duration-200;
   }
   
   .mode-switch-handle {
-    @apply w-10 h-10 rounded-full bg-white shadow-neu transition-all duration-200;
+    @apply w-10 h-10 rounded-full bg-white dark:bg-dark-secondary shadow-neu dark:shadow-neu-dark transition-all duration-200;
   }
 }
