@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-primary min-h-screen flex items-center justify-center font-sans;
+    @apply bg-gray-100 min-h-screen flex items-center justify-center font-sans;
   }
 }
 
@@ -18,10 +18,10 @@
   }
   
   .mode-switch {
-    @apply w-24 h-12 rounded-full shadow-neu p-1 cursor-pointer transition-all duration-300;
+    @apply w-24 h-12 rounded-full shadow-neu p-1 cursor-pointer transition-all duration-200;
   }
   
   .mode-switch-handle {
-    @apply w-10 h-10 rounded-full bg-white shadow-neu transition-all duration-300;
+    @apply w-10 h-10 rounded-full bg-white shadow-neu transition-all duration-200;
   }
 }
