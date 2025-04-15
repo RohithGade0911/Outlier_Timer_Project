@@ -106,7 +106,7 @@ function App() {
   return (
     <div className="relative">
       {/* App Title - Outside the card */}
-      <div className="mb-4 text-center">
+      <div className="mb-6 text-center">
         <h1 className="text-5xl font-bold font-mairo">
           <span className="text-gray-700 dark:text-gray-200">Lap</span>
           <span className="text-accent dark:text-dark-accent">Wise</span>
@@ -120,7 +120,7 @@ function App() {
             <motion.img
               src={imageStart}
               alt="Start"
-              className="absolute w-[180px] h-[180px] right-0 top-1/2 -translate-y-1/2 z-0"
+              className="absolute w-[220px] h-[180px] right-0 top-1/2 -translate-y-1/2 z-0"
               initial={{ 
                 x: "100%", 
                 rotate: -15, 
@@ -128,10 +128,11 @@ function App() {
                 scale: 0.8
               }}
               animate={{ 
-                x: "-40px",
+                x: "120px",
+                y: "-250px",
                 rotate: 0, 
                 opacity: 1,
-                scale: 1
+                scale: 2
               }}
               exit={{ 
                 x: "100%", 
@@ -160,10 +161,11 @@ function App() {
                 scale: 0.8
               }}
               animate={{ 
-                x: "40px", 
+                x: "-100px", 
+                y: "100px",
                 rotate: 0, 
                 opacity: 1,
-                scale: 1
+                scale: 2
               }}
               exit={{ 
                 x: "-100%", 
@@ -392,7 +394,7 @@ function App() {
       </div>
       
       {/* Footer */}
-      <div className="mt-4 text-center text-xs text-gray-500 dark:text-gray-400">
+      <div className="mt-6 text-center text-xs text-gray-500 dark:text-gray-400">
         <p>© {new Date().getFullYear()} Rohith Gade. All rights reserved.</p>
         <p className="mt-1">Contact: <a href="mailto:rohithgade0911@gmail.com" className="text-accent dark:text-dark-accent hover:underline">rohithgade0911@gmail.com</a></p>
       </div>
