@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTimer } from './hooks/useTimer'
 import reactLogo from './assets/react.svg'
@@ -25,7 +25,8 @@ function App() {
   } = useTimer(mode)
   
   const formattedTime = formatTime(time)
-
+  const lapListRef = useRef(null)
+  
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
@@ -33,6 +34,15 @@ function App() {
       document.documentElement.classList.remove('dark')
     }
   }, [isDarkMode])
+
+  useEffect(() => {
+    if (laps.length > 4 && lapListRef.current) {
+      lapListRef.current.scrollTo({
+        top: lapListRef.current.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }, [laps.length])
 
   const handleInputChange = (field, value) => {
     const numValue = parseInt(value) || ''
@@ -95,6 +105,14 @@ function App() {
 
   return (
     <div className="relative">
+      {/* App Title - Outside the card */}
+      <div className="mb-4 text-center">
+        <h1 className="text-5xl font-bold font-mairo">
+          <span className="text-gray-700 dark:text-gray-200">Lap</span>
+          <span className="text-accent dark:text-dark-accent">Wise</span>
+        </h1>
+      </div>
+
       {/* Outer container for overflow handling */}
       <div className="absolute inset-0 -m-8">
         <AnimatePresence mode="wait">
@@ -102,7 +120,7 @@ function App() {
             <motion.img
               src={imageStart}
               alt="Start"
-              className="absolute w-[210px] h-[180px] right-0 top-1/2 -translate-y-1/2 z-0"
+              className="absolute w-[180px] h-[180px] right-0 top-1/2 -translate-y-1/2 z-0"
               initial={{ 
                 x: "100%", 
                 rotate: -15, 
@@ -110,11 +128,10 @@ function App() {
                 scale: 0.8
               }}
               animate={{ 
-                x: "110px",
-                y: "-300px",
+                x: "-40px",
                 rotate: 0, 
                 opacity: 1,
-                scale: 2
+                scale: 1
               }}
               exit={{ 
                 x: "100%", 
@@ -127,7 +144,7 @@ function App() {
                 stiffness: 200,
                 damping: 20,
                 mass: 0.8,
-                duration: 0.9
+                duration: 0.5
               }}
             />
           )}
@@ -143,11 +160,10 @@ function App() {
                 scale: 0.8
               }}
               animate={{ 
-                x: "-100px", 
-                y: "100px",
+                x: "40px", 
                 rotate: 0, 
                 opacity: 1,
-                scale: 2
+                scale: 1
               }}
               exit={{ 
                 x: "-100%", 
@@ -160,7 +176,7 @@ function App() {
                 stiffness: 200,
                 damping: 20,
                 mass: 0.8,
-                duration: 0.9
+                duration: 0.5
               }}
             />
           ) : null}
@@ -185,10 +201,10 @@ function App() {
           )}
         </button>
 
-        {/* Rest of the content */}
-        <div className="relative z-10 w-full flex flex-col items-center">
+        {/* Content Container */}
+        <div className="flex-1 w-full flex flex-col items-center justify-center">
           {/* Mode Selector */}
-          <div className="flex flex-col items-center gap-2 mt-4">
+          <div className="flex flex-col items-center gap-2 mb-8">
             <motion.div
               className="cursor-pointer"
               onClick={() => handleModeSwitch('stopwatch')}
@@ -223,35 +239,48 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="flex flex-col items-center"
+                  className="flex flex-col items-center relative"
                 >
+                  {/* Fixed position timer display */}
                   <div className={`text-6xl font-bold mb-4 ${isCompleted ? 'text-accent dark:text-dark-accent' : 'text-gray-700 dark:text-gray-200'}`}>
                     {`${formattedTime.hours}:${formattedTime.minutes}:${formattedTime.seconds}`}
                     <span className="text-3xl">.{formattedTime.milliseconds}</span>
                   </div>
+                  
+                  {/* Lap list in a separate container */}
                   {laps.length > 0 && (
-                    <motion.div 
-                      className="w-full max-h-40 overflow-y-auto mt-4"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      {laps.map((lap, index) => {
-                        const lapTime = formatTime(lap)
-                        return (
-                          <motion.div 
-                            key={index} 
-                            className="flex justify-between items-center py-2 text-gray-700 dark:text-gray-200"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                          >
-                            <span>Lap {index + 1}</span>
-                            <span>{`${lapTime.hours}:${lapTime.minutes}:${lapTime.seconds}.${lapTime.milliseconds}`}</span>
-                          </motion.div>
-                        )
-                      })}
-                    </motion.div>
+                    <div className="absolute top-[120px] left-0 right-0">
+                      <motion.div 
+                        ref={lapListRef}
+                        className="w-full max-h-40 overflow-y-auto scrollbar-hide"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        style={{
+                          scrollbarWidth: 'none',
+                          msOverflowStyle: 'none',
+                          '&::-webkit-scrollbar': {
+                            display: 'none'
+                          }
+                        }}
+                      >
+                        {laps.map((lap, index) => {
+                          const lapTime = formatTime(lap)
+                          return (
+                            <motion.div 
+                              key={index} 
+                              className="flex justify-between items-center py-2 text-gray-700 dark:text-gray-200"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                            >
+                              <span>Lap {index + 1}</span>
+                              <span>{`${lapTime.hours}:${lapTime.minutes}:${lapTime.seconds}.${lapTime.milliseconds}`}</span>
+                            </motion.div>
+                          )
+                        })}
+                      </motion.div>
+                    </div>
                   )}
                 </motion.div>
               ) : (
@@ -263,7 +292,7 @@ function App() {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col items-center"
                 >
-                  <div className={`text-6xl font-bold mb-4 ${isCompleted ? 'text-accent dark:text-dark-accent' : 'text-gray-700 dark:text-gray-200'}`}>
+                  <div className={`text-6xl font-bold mb-8 ${isCompleted ? 'text-accent dark:text-dark-accent' : 'text-gray-700 dark:text-gray-200'}`}>
                     {`${formattedTime.hours}:${formattedTime.minutes}:${formattedTime.seconds}`}
                   </div>
                   <div className="flex gap-4 mt-4">
@@ -360,6 +389,12 @@ function App() {
             )}
           </div>
         </div>
+      </div>
+      
+      {/* Footer */}
+      <div className="mt-4 text-center text-xs text-gray-500 dark:text-gray-400">
+        <p>© {new Date().getFullYear()} Rohith Gade. All rights reserved.</p>
+        <p className="mt-1">Contact: <a href="mailto:rohithgade0911@gmail.com" className="text-accent dark:text-dark-accent hover:underline">rohithgade0911@gmail.com</a></p>
       </div>
     </div>
   )
