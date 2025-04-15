@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-primary min-h-screen flex items-center justify-center font-sans;
+  }
+}
+
+@layer components {
+  .neu-button {
+    @apply px-6 py-3 rounded-xl shadow-neu active:shadow-neu-inset transition-all duration-200;
+  }
+  
+  .neu-input {
+    @apply w-16 h-16 text-center text-2xl rounded-xl shadow-neu-inset bg-primary focus:outline-none;
+  }
+  
+  .mode-switch {
+    @apply w-24 h-12 rounded-full shadow-neu p-1 cursor-pointer transition-all duration-300;
+  }
+  
+  .mode-switch-handle {
+    @apply w-10 h-10 rounded-full bg-white shadow-neu transition-all duration-300;
+  }
+}
